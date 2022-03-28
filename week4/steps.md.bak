@@ -1,0 +1,60 @@
+## 操作步骤
+
+## 1. 登录hive
+登陆上服务器，输入hive，进入交互界面。
+
+## 2. 建立数据表
+### movie表
+
+```sql
+create external table terry_movie(    
+    MovieID      int
+   ,MovieName    string
+   ,MovieType   array<string>
+)
+ ROW FORMAT SERDE 'org.apache.hadoop.hive.contrib.serde2.MultiDelimitSerDe' 
+WITH SERDEPROPERTIES ("field.delim"="::","collection.delim"="|")
+location '/data/hive/movies';
+```
+
+### user表
+```sql
+create external table terry_user(    
+    UserID      int
+   ,Sex    string
+   ,Age      int
+   ,Occupation      int
+   ,Zipcode    string
+)
+ ROW FORMAT SERDE 'org.apache.hadoop.hive.contrib.serde2.MultiDelimitSerDe' 
+WITH SERDEPROPERTIES ("field.delim"="::")
+location '/data/hive/users';
+```
+
+### rating表
+
+```sql
+create external table terry_ratings(    
+UserID, MovieID, Rate, Times
+    UserID      int
+   ,MovieID    int
+   ,Rate      int
+   ,Times      int
+)
+ ROW FORMAT SERDE 'org.apache.hadoop.hive.contrib.serde2.MultiDelimitSerDe' 
+WITH SERDEPROPERTIES ("field.delim"="::")
+location '/data/hive/ratings';
+```
+
+## 作业1
+题目一（简单）
+展示电影 ID 为 2116 这部电影各年龄段的平均影评分。
+
+```sql
+select age, average(*) avgrate from ratings where MovieID=2116 group by age;
+```
+
+
+删除表
+
+ drop table terry_movie;
